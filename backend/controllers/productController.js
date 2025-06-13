@@ -22,6 +22,7 @@ const getAllProducts = async (req, res) => {
   }
 };
 
+
 //Actualizar producto
 const updateProduct = async (req, res) => {
   try {
@@ -40,6 +41,20 @@ const deleteProduct = async (req, res) => {
     res.status(500).json({ message: 'Error al eliminar producto' })
   }
 };
+
+//Obtener producto por id
+const getProductById = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ message: 'Producto no encontrado' });
+    }
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener el producto' });
+  }
+};
+
 
 module.exports = {
   createProduct,
