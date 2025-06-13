@@ -48,4 +48,33 @@ const register = async (req, res) => {
   }
 };
 
-module.exports = { register };
+const verifyEmail = async (req, res) => {
+  const { token } = req.query;
+
+  if (!token) {
+    return res.status(400).json({ message: 'Token faltante' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    if (user.verified) {
+      return res.status(400).json({ message: 'La cuenta ya fue verificada' });
+    }
+
+    user.verified = true;
+    await user.save();
+
+    res.status(200).json({ message: 'Cuenta verificada correctamente' });
+  } catch (error) {
+    console.error('Error verificando email:', error);
+    res.status(400).json({ message: 'Token inválido o expirado' });
+  }
+};
+
+module.exports = { register, verifyEmail };
