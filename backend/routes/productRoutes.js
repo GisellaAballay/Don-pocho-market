@@ -2,6 +2,8 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware');
+const isAdmin = require('../middleware/isAdmin'); 
+
 const {
   createProduct,
   getAllProducts,
@@ -15,7 +17,7 @@ router.get('/', getAllProducts);
 router.get('/:id', getProductById);
 
 //Solo el admin (crear middleware isAdmin)
-router.post('/', authMiddleware, createProduct);
+router.post('/', authMiddleware, isAdmin, createProduct);
 router.put('/:id', authMiddleware, updateProduct);
 router.delete('/:id', authMiddleware, deleteProduct);
 
