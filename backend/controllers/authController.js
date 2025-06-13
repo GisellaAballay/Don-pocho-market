@@ -77,4 +77,56 @@ const verifyEmail = async (req, res) => {
   }
 };
 
-module.exports = { register, verifyEmail };
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  // Validación simple
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email y contraseña obligatorios' });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+
+    // Verificar existencia
+    if (!user) {
+      return res.status(401).json({ message: 'Email o contraseña inválidos' });
+    }
+
+    // Verificar si está verificado
+    if (!user.verified) {
+      return res.status(403).json({ message: 'Debes verificar tu email para iniciar sesión' });
+    }
+
+    // Comparar contraseñas
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Email o contraseña inválidos' });
+    }
+
+    // Crear token de acceso
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    res.status(200).json({
+      message: 'Inicio de sesión exitoso',
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+
+  } catch (error) {
+    console.error('Error en login:', error);
+    res.status(500).json({ message: 'Error al iniciar sesión' });
+  }
+};
+
+
+module.exports = { register, verifyEmail, login };
