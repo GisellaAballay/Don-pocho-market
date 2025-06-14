@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const cartRoutes = require('./routes/cartRoutes');
 
 dotenv.config();
 
@@ -18,7 +19,8 @@ mongoose.connect(process.env.MONGO_URI)
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/products', require('./routes/productRoutes'));
-// ...más adelante: /orders, /cart, /admin
+app.use('./api/cart', cartRoutes);
+// ...más adelante: /orders, /admin
 
 // Servidor
 const PORT = process.env.PORT || 5000;
