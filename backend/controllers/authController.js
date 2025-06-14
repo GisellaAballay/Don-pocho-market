@@ -36,11 +36,16 @@ const register = async (req, res) => {
     const verifyUrl = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
   
   //Enviar email 
-    await sendEmail(email, 'Verificá tu cuenta', `<h2>Hola ${name}</h2>
-    <p>Gracias por registrarte. Hacé clic en el siguiente enlace para verificartu email:</p>
-    <a href="${verifyUrl}">Verificar cuenta</a>
-    `);
-
+    await sendEmail({
+      to: newUser.email,
+      subject: 'Verifica tu cuenta',
+      text: `Haz clic aquí para verificar tu cuenta: ${url}`
+    });
+  // await sendEmail(email, 'Verificá tu cuenta', `<h2>Hola ${name}</h2>
+  // <p>Gracias por registrarte. Hacé clic en el siguiente enlace para verificartu email:</p>
+  // <a href="${verifyUrl}">Verificar cuenta</a>
+  // `);
+  
     res.status(201).json({ message: 'Usuario creado. Verificá tu email.' });
   } catch (error) {
     console.error('Error en registro:', error);
