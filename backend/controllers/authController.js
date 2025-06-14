@@ -39,8 +39,9 @@ const register = async (req, res) => {
     await sendEmail({
       to: newUser.email,
       subject: 'Verifica tu cuenta',
-      text: `Haz clic aquí para verificar tu cuenta: ${url}`
+      text: `Haz clic aquí para verificar tu cuenta: ${verifyUrl}`
     });
+  // OTRA OPCION PARA SENDEMAIL
   // await sendEmail(email, 'Verificá tu cuenta', `<h2>Hola ${name}</h2>
   // <p>Gracias por registrarte. Hacé clic en el siguiente enlace para verificartu email:</p>
   // <a href="${verifyUrl}">Verificar cuenta</a>
