@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const {getCart, addToCart, updateCartItem, removeFromCart, clearCart} = require('../controllers/cartController');
 
-const auth = require('../middleware/auth'); //Protege rutas para usuarios logueados
+const auth = require('../middleware/authMiddleware'); //Protege rutas para usuarios logueados
 
 // Obtener el carrito del usuario logueado 
 router.get('/', auth, getCart);
