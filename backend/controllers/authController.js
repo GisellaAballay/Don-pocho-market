@@ -39,14 +39,16 @@ const register = async (req, res) => {
     await sendEmail({
       to: newUser.email,
       subject: 'Verifica tu cuenta',
-      text: `Haz clic aquí para verificar tu cuenta: ${verifyUrl}`
+      html:`
+            <h2>Hola ${name}</h2> 
+             
+            <p>Gracias por registrarte. Haz clic aquí para verificar tu cuenta:</p>
+            <a href="${verifyUrl}" target="_blank">Verificar email</a>
+
+            <p>Este enlace expirará en 24 horas.</p>
+          `
     });
-  // OTRA OPCION PARA SENDEMAIL
-  // await sendEmail(email, 'Verificá tu cuenta', `<h2>Hola ${name}</h2>
-  // <p>Gracias por registrarte. Hacé clic en el siguiente enlace para verificartu email:</p>
-  // <a href="${verifyUrl}">Verificar cuenta</a>
-  // `);
-  
+
     res.status(201).json({ message: 'Usuario creado. Verificá tu email.' });
   } catch (error) {
     console.error('Error en registro:', error);
