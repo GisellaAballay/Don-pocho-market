@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const authRoutes = require('./routes/authRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const userRoutes = require('./routes/userRoutes');
 
@@ -21,7 +22,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/users', userRoutes);
 app.use('/api/products', require('./routes/productRoutes'));
-app.use('./api/cart', cartRoutes);
+app.use('/api/cart', cartRoutes);
 // ...más adelante: /orders, /admin
 
 // Servidor
