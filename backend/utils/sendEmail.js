@@ -1,5 +1,5 @@
 
-const { text } = require('express');
+const { html } = require('express');
 const nodemailer = require('nodemailer');
 
 const sendEmail = async ({ to, subject, html }) => {
@@ -16,7 +16,7 @@ const sendEmail = async ({ to, subject, html }) => {
       from: `"Don Pocho Market" <${process.env.EMAIL_USER}>`,
       to,
       subject,
-      text
+      html
     };
 
     const info = await transporter.sendMail(mailOptions);
