@@ -30,6 +30,7 @@ const createOrder = async (req, res) => {
 const getUserOrders = async (req, res) => {
   try {
     const orders = await Order.find({ user: req.user.id }).populate('items.product');
+    res.status(200).json(orders);
   } catch (error) {
     console.error('Error obtenido órdenes: ', error);
     res.status(500).json({ message: 'Error al obtener órdenes' });
