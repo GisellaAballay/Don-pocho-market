@@ -4,11 +4,14 @@ const Order = require('../models/Order');
 // PARA CREAR UNA NUEVA ORDEN 
 const createOrder = async (req, res) => {
   try {
-    const { items, deliveryMethod, paymentMethod, totalPrice } = req.body;
+    const { items, deliveryMethod, paymentMethod } = req.body;
 
     if (!items || items.length === 0) {
       return res.status(400).json({ message: 'La orden no puede estar vacía' })
     }
+
+    // Calcular valor de la venta automáticamente 
+    const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     const newOrder = new Order ({
       user: req.user.id,  //Obtenida desde el middleware auth
@@ -21,7 +24,7 @@ const createOrder = async (req, res) => {
     const saveOrder = await newOrder.save();
     res.status(201).json(saveOrder);
   } catch (error) {
-    console.erros('Error creando orden:', error);
+    console.error('Error al crear la orden:', error);
     res.status(500).json({ message: 'Error al crear la orden' });
   }
 }; 
@@ -58,4 +61,30 @@ const getOrderById = async (req, res) => {
   }
 };
 
-module.exports = { createOrder, getUserOrders, getOrderById };
+const updateOrderStatus = async(req, res) => {
+  try {
+    const { status } = req.body;
+
+    // Validar estado permitido
+    const validStatuses = ['pendiente', 'pagado', 'en preparación', 'enviado', 'entregado'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ message: 'Estado no válido' });
+    }
+
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.status(400).json({ message: 'Orden no encontrada' })
+    }
+
+    order.status = status;
+    const updateOrder = await order.save();
+
+    res.status(200).json(updateOrder);
+  } catch (error) {
+    console.error('Error al actualizar el estado: ', error);
+    res.status(500).json({ message: 'Error al actualizar el estado' });
+  }
+}
+
+module.exports = { createOrder, getUserOrders, getOrderById, updateOrderStatus };
