@@ -1,11 +1,11 @@
-
+console.log('Script inciciado')
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const Product = require('../models/Product');
 
 dotenv.config();
 
-const prducts = [
+const products = [
    {
     name: 'Yerba Mate',
     description: 'Yerba suave sin palo',
@@ -58,12 +58,17 @@ const prducts = [
 const seedProducts = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
+    console.log('Conectado a MongoDB');
+
     await Product.deleteMany();   //borra productos anteriores
+    console.log('🗑 Productos eliminados');
+
     await Product.insertMany(products);
     console.log('✅ Productos insertados con éxito');
-    process.exit();
+
+    process.exit(); //Cierra el proceso correctamente 
   } catch (error) {
-    console.error('❌ Error al insertar productos:', error);
+    console.error('❌ Error al insertar producto:', error.message);
     process.exit(1);
   }
 };
