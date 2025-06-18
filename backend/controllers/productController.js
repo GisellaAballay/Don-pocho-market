@@ -4,10 +4,14 @@ const Product = require('../models/Product');
 //Crear producto(solo para admin)
 const createProduct = async (req, res) => {
   try {
+    //const { name, description, price, stock, image, category } = (req.body);
+
     const product = new Product(req.body);
     await product.save();
-    res.status(201).json(product);
-  } catch (err) {
+
+    res.status(201).json({ message: 'Producto creado con éxito', product: newProduct });
+  } catch (error) {
+    console.error('Error al crear producto', error);
     res.status(500).json({ message: 'Error al crear producto'});
   }
 };
