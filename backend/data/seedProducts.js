@@ -1,9 +1,9 @@
-console.log('Script inciciado')
+
+require('dotenv').config({ path: '../.env' });
+
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
 const Product = require('../models/Product');
 
-dotenv.config();
 
 const products = [
    {
@@ -57,6 +57,7 @@ const products = [
 
 const seedProducts = async () => {
   try {
+    console.log('🌐 URI de Mongo:', process.env.MONGO_URI);
     await mongoose.connect(process.env.MONGO_URI);
     console.log('Conectado a MongoDB');
 
