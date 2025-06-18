@@ -60,10 +60,4 @@ const getProductById = async (req, res) => {
 };
 
 
-module.exports = {
-  createProduct,
-  getAllProducts,
-  getProductById,
-  updateProduct,
-  deleteProduct
-};
+export { createProduct, getAllProducts, getProductById, updateProduct, deleteProduct};

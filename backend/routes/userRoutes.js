@@ -1,9 +1,12 @@
 
-const express = require('express');
+import express from 'express';
+import { registerUser, loginUser, getUserProfile } from '../controllers/userController.js';
+import { protect } from '../middlewares/authMiddleware.js';
+
 const router = express.Router();
-const authMiddleware = require('../middleware/authMiddleware');
-const { getProfile } = require('../controllers/userController');
 
-router.get('/profile', authMiddleware, getProfile); // Ruta protegida
+router.post('/register', registerUser);
+router.post('/login', loginUser);
+router.get('/profile', protect, getUserProfile);
 
-module.exports = router;
+export default router;

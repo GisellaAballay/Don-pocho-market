@@ -1,9 +1,11 @@
 
-const express = require('express');
-const router = express.Router();
-const {getCart, addToCart, updateCartItem, removeFromCart, clearCart} = require('../controllers/cartController');
+import express from 'express';
+import { getCart, addToCart, updateCartItem, removeFromCart, clearCart } from '../controllers/cartController.js';
+import { protect } from '../middlewares/authMiddleware.js';
 
-const auth = require('../middleware/authMiddleware'); //Protege rutas para usuarios logueados
+const router = express.Router();
+
+router.use(protect);
 
 // Obtener el carrito del usuario logueado 
 router.get('/', auth, getCart);
@@ -20,4 +22,4 @@ router.delete('/remove', auth, removeFromCart);
 // Vaciar el carrito
 router.delete('/remove', auth, clearCart);
 
-module.exports = router;
+export { router }

@@ -88,4 +88,4 @@ const clearCart = async (req, res) => {
   }
 };
 
-module.exports = {getCart, addToCart, updateCartItem, removeFromCart, clearCart}; 
+export {getCart, addToCart, updateCartItem, removeFromCart, clearCart}; 

@@ -95,4 +95,12 @@ if (user.notificationPreference === 'email') {
   await sendWhatsApp(user.phoneNumber, `Tu pedido ahora está: ${order.status}`);
 }
 
-module.exports = { createOrder, getUserOrders, getOrderById, updateOrderStatus };
+if (order.status === 'pagado') {
+  const adminEmail = process.env.ADMIN_EMAIL;
+  const adminPhone = process.env.ADMIN_PHONE;
+
+  await sendEmail(adminEmail, 'Nuevo pedido confirmado', `Hay un nuevo pedido confirmado: ${order._id}`);
+  await sendWhatsApp(adminPhone, `🚨 Pedido confirmado: ${order._id}`);
+}
+
+export { createOrder, getUserOrders, getOrderById, updateOrderStatus };
