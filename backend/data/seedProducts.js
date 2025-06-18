@@ -1,7 +1,8 @@
 
 require('dotenv').config({ path: '../.env' });
 
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+//const mongoose = require('mongoose');
 const Product = require('../models/Product');
 
 

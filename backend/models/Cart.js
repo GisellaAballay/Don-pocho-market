@@ -1,6 +1,7 @@
 //Este permite guardar productos que un usuario quiera comprar, antes de confirmar su pedido
 
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
+//const mongoose = require('mongoose');
 
 const cartItemSchema = new mongoose.Schema({
   product: {

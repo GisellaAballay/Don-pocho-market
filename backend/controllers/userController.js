@@ -11,7 +11,4 @@ const getProfile = async (req, res) => {
   }
 };
 
-module.exports = {
-  getProfile,
-  // otros métodos que vayas agregando como updateUser, deleteUser, etc.
-};
+export { getProfile } //otros métodos como updateUser, deleteUser, etc

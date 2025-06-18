@@ -137,4 +137,4 @@ const login = async (req, res) => {
 };
 
 
-module.exports = { register, verifyEmail, login };
+export { register, verifyEmail, login };
