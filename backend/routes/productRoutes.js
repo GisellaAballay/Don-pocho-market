@@ -18,7 +18,7 @@ router.get('/:id', getProductById);
 
 //Solo el admin (crear middleware isAdmin)
 router.post('/', authMiddleware, isAdmin, createProduct);
-router.put('/:id', authMiddleware, updateProduct);
-router.delete('/:id', authMiddleware, deleteProduct);
+router.put('/:id', authMiddleware, isAdmin, updateProduct);
+router.delete('/:id', authMiddleware, isAdmin, deleteProduct);
 
 module.exports = router;
