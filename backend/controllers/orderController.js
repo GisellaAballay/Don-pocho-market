@@ -87,4 +87,12 @@ const updateOrderStatus = async(req, res) => {
   }
 }
 
+const user = await User.findById(order.user);
+
+if (user.notificationPreference === 'email') {
+  await sendEmail(user.email, 'Actualización de tu pedido', `Tu pedido ahora está: ${order.status}`);
+} else if (user.notificationPreference === 'whatsapp') {
+  await sendWhatsApp(user.phoneNumber, `Tu pedido ahora está: ${order.status}`);
+}
+
 module.exports = { createOrder, getUserOrders, getOrderById, updateOrderStatus };
