@@ -22,4 +22,4 @@ router.delete('/remove', auth, removeFromCart);
 // Vaciar el carrito
 router.delete('/remove', auth, clearCart);
 
-export { router }
+export default router;

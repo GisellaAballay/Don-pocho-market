@@ -1,5 +1,5 @@
 
-const User = require('../models/User');
+import User from '../models/User.js';
 
 const isAdmin = async (req, res, next) => {
   try {
@@ -15,4 +15,4 @@ const isAdmin = async (req, res, next) => {
   }
 };
 
-export { isAdmin }
+export default isAdmin;

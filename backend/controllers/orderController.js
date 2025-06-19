@@ -1,5 +1,8 @@
 
-const Order = require('../models/Order');
+import Order from '../models/Order.js';
+import User from '../models/User.js';
+import { sendEmail } from '../utils/sendEmail.js';
+import { sendWhatsApp } from '../utils/sendWhatsApp.js';
 
 // PARA CREAR UNA NUEVA ORDEN 
 const createOrder = async (req, res) => {
@@ -61,6 +64,7 @@ const getOrderById = async (req, res) => {
   }
 };
 
+//ACTUALIZAR ESTADO DE UNA ORDEN + NOTIFICACIONES
 const updateOrderStatus = async(req, res) => {
   try {
     const { status } = req.body;
@@ -72,13 +76,29 @@ const updateOrderStatus = async(req, res) => {
     }
 
     const order = await Order.findById(req.params.id);
-
-    if (!order) {
-      return res.status(400).json({ message: 'Orden no encontrada' })
-    }
+    if (!order) { return res.status(400).json({ message: 'Orden no encontrada' })}
 
     order.status = status;
     const updateOrder = await order.save();
+
+    //Obtener datos del usuario
+    constuser = await User.findById(order.user);
+
+    //Notificar al usuario
+    if (user.notificationPreference === 'email') { 
+      await sendEmail(user.email, 'Actualización de tu pedido', `Tu pedido ahora está: ${order.status}`);
+    } else if (user.notificationPreference === 'whatsapp') {
+      await sendWhatsApp(user.phoneNumber, `Tu pedido ahora está: ${order.status}`);
+    }
+
+    //Si el pedido está pago, notificar al admin
+    if (order.status === 'pagado') {
+      const adminEmail = process.env.ADMIN_EMAIL;
+      const adminPhone = process.env.ADMIN_PHONE;
+
+      await sendEmail(adminEmail, 'Nuevo pedido confirmado', `Hay un nuevo pedido confirmado: ${order._id}`);
+      await sendWhatsApp(adminPhone, `Pedido confirmado: ${order._id}`); 
+    }
 
     res.status(200).json(updateOrder);
   } catch (error) {
@@ -87,20 +107,5 @@ const updateOrderStatus = async(req, res) => {
   }
 }
 
-const user = await User.findById(order.user);
-
-if (user.notificationPreference === 'email') {
-  await sendEmail(user.email, 'Actualización de tu pedido', `Tu pedido ahora está: ${order.status}`);
-} else if (user.notificationPreference === 'whatsapp') {
-  await sendWhatsApp(user.phoneNumber, `Tu pedido ahora está: ${order.status}`);
-}
-
-if (order.status === 'pagado') {
-  const adminEmail = process.env.ADMIN_EMAIL;
-  const adminPhone = process.env.ADMIN_PHONE;
-
-  await sendEmail(adminEmail, 'Nuevo pedido confirmado', `Hay un nuevo pedido confirmado: ${order._id}`);
-  await sendWhatsApp(adminPhone, `🚨 Pedido confirmado: ${order._id}`);
-}
 
 export { createOrder, getUserOrders, getOrderById, updateOrderStatus };
