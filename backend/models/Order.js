@@ -1,5 +1,4 @@
 
-//const mongoose = require('mongoose');
 import mongoose from 'mongoose';
 
 const orderSchema = new mongoose.Schema({
@@ -41,10 +40,11 @@ const orderSchema = new mongoose.Schema({
     enum: ['pendiente', 'pagado', 'en preparación', 'enviado', 'entregado'],
     default: 'pendiente'
   },
-  createAt: {
+  createdAt: {
     type: Date,
     default: Date.now
   }
 });
 
-module.exports = mongoose.model('Order', orderSchema);
+const Order = mongoose.model('Order', orderSchema);
+export default Order;

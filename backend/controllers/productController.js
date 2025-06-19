@@ -1,5 +1,5 @@
 
-const Product = require('../models/Product');
+import Product from '../models/Product.js';
 
 //Crear producto(solo para admin)
 const createProduct = async (req, res) => {
@@ -9,7 +9,7 @@ const createProduct = async (req, res) => {
     const product = new Product(req.body);
     await product.save();
 
-    res.status(201).json({ message: 'Producto creado con éxito', product: newProduct });
+    res.status(201).json({ message: 'Producto creado con éxito', product });
   } catch (error) {
     console.error('Error al crear producto', error);
     res.status(500).json({ message: 'Error al crear producto'});
@@ -26,7 +26,6 @@ const getAllProducts = async (req, res) => {
   }
 };
 
-
 //Actualizar producto
 const updateProduct = async (req, res) => {
   try {
@@ -41,6 +40,7 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     await Product.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: 'Producto eliminado correctamente' });
   } catch (err) {
     res.status(500).json({ message: 'Error al eliminar producto' })
   }
@@ -58,6 +58,5 @@ const getProductById = async (req, res) => {
     res.status(500).json({ message: 'Error al obtener el producto' });
   }
 };
-
 
 export { createProduct, getAllProducts, getProductById, updateProduct, deleteProduct};

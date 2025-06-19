@@ -1,5 +1,4 @@
 
-//const mongoose = require('mongoose');
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
@@ -8,9 +7,9 @@ const userSchema = new mongoose.Schema({
   password: {type: String, required: true },
   isAdmin: {type: Boolean, default: false },
   verified: {type: Boolean, default: false },
-  isAdmin: {type: Boolean, default: false},
   notificationPreference: {type: String, enum: ['email', 'whatsapp'], default: 'email'},
   phoneNumber: {type: String}
 }, {timestamps: true });
 
-module.exports = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
+export default User;
