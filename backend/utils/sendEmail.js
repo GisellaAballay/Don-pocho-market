@@ -1,6 +1,5 @@
 
-const { html } = require('express');
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
 const sendEmail = async ({ to, subject, html }) => {
   try{
@@ -27,4 +26,4 @@ const sendEmail = async ({ to, subject, html }) => {
     };
 }
 
-export { sendEmail }
+export default sendEmail;
