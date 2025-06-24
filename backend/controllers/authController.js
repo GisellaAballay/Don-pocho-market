@@ -1,8 +1,8 @@
 
-const User = require('../models/User');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const sendEmail = require('../utils/sendEmail');
+import User from '../models/User.js';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import sendEmail from '../utils/sendEmail.js';
 
 const register = async (req, res) => {
   try {

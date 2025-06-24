@@ -2,7 +2,7 @@
 import express from 'express';
 import authMiddleware from '../middleware/authMiddleware.js';
 import isAdmin from '../middleware/isAdmin.js'; 
-import { createProduct, getAllProducts, getProductById, updateProduct, deleteProduct} from '../controllers/productController';
+import { createProduct, getAllProducts, getProductById, updateProduct, deleteProduct} from '../controllers/productController.js';
 
 const router = express.Router();
 

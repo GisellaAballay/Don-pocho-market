@@ -1,8 +1,8 @@
 
 import Order from '../models/Order.js';
 import User from '../models/User.js';
-import { sendEmail } from '../utils/sendEmail.js';
-import { sendWhatsApp } from '../utils/sendWhatsApp.js';
+import sendEmail from '../utils/sendEmail.js';
+import sendWhatsApp from '../utils/sendWhatsApp.js';
 
 // PARA CREAR UNA NUEVA ORDEN 
 const createOrder = async (req, res) => {

@@ -1,26 +1,25 @@
 
 import express from 'express';
 import { getCart, addToCart, updateCartItem, removeFromCart, clearCart } from '../controllers/cartController.js';
-//import { protect } from '../middlewares/authMiddleware.js';
-import { authMiddleware } from '../middleware/authMiddleware.js';
+import authMiddleware from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
 router.use(authMiddleware);
 
 // Obtener el carrito del usuario logueado 
-router.get('/', auth, getCart);
+router.get('/', authMiddleware, getCart);
 
 //Agregar un producto al carrito
-router.post('/add', auth, addToCart);
+router.post('/add', authMiddleware, addToCart);
 
 // Actualizar cantidad de un producto en el carrito 
-router.put('/update', auth, updateCartItem);
+router.put('/update', authMiddleware, updateCartItem);
 
 // Eliminar un producto del carrito
-router.delete('/remove', auth, removeFromCart);
+router.delete('/remove', authMiddleware, removeFromCart);
 
 // Vaciar el carrito
-router.delete('/remove', auth, clearCart);
+router.delete('/remove', authMiddleware, clearCart);
 
 export default router;
