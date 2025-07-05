@@ -107,5 +107,16 @@ const updateOrderStatus = async(req, res) => {
   }
 }
 
+const getAllOrders = async (req, res) => {
+  try{
+    const orders = await Order.find()
+      .populate('user', 'name email') //incluye nombre y email del usuario
+      .sort({ createAt: -1 }); //Muestra las más recientes primero
 
-export { createOrder, getUserOrders, getOrderById, updateOrderStatus };
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener todas las órdenes', error })
+  }
+};
+
+export { createOrder, getUserOrders, getOrderById, updateOrderStatus, getAllOrders };
