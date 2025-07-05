@@ -76,19 +76,19 @@ const updateOrderStatus = async(req, res) => {
     }
 
     const order = await Order.findById(req.params.id);
-    if (!order) { return res.status(400).json({ message: 'Orden no encontrada' })}
+    if (!order) { return res.status(404).json({ message: 'Orden no encontrada' })}
 
     order.status = status;
     const updateOrder = await order.save();
 
     //Obtener datos del usuario
-    constuser = await User.findById(order.user);
+    const user = await User.findById(order.user);
 
     //Notificar al usuario
     if (user.notificationPreference === 'email') { 
-      await sendEmail(user.email, 'Actualización de tu pedido', `Tu pedido ahora está: ${order.status}`);
+      await sendEmail(user.email, 'Actualización de tu pedido', `Hola ${user.name || ''}, el estado de tu pedido de Don Pocho ha sido actualizado a: ${order.status}`);
     } else if (user.notificationPreference === 'whatsapp') {
-      await sendWhatsApp(user.phoneNumber, `Tu pedido ahora está: ${order.status}`);
+      await sendWhatsApp(user.phoneNumber, `Hola ${user.name || ''}, el estado de tu pedido de Don Pocho ha sido actualizado a: ${order.status}`);
     }
 
     //Si el pedido está pago, notificar al admin
