@@ -43,6 +43,12 @@ const orderSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  paymentResult: {
+    id: String,
+    status: String,
+    update_time: String,
+    email_address: String
   }
 });
 
