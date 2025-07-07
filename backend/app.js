@@ -8,6 +8,7 @@ import cartRoutes from './routes/cartRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import productRoutes from './routes/productRoutes.js';
+import errorHandler from './middleware/errorHandler.js';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -26,6 +27,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
+app.use(errorHandler);
 // Falta Agregar ruta admin?
 
 // Conexión en el puerto

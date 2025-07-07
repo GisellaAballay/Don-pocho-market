@@ -1,4 +1,5 @@
 
+import { NetworkContextImpl } from 'twilio/lib/rest/supersim/v1/network.js';
 import Order from '../models/Order.js';
 import User from '../models/User.js';
 import sendEmail from '../utils/sendEmail.js';
@@ -49,18 +50,19 @@ const getOrderById = async (req, res) => {
     const order = await Order.findById(req.params.id).populate('items.product');
 
     if(!order) {
-      return res.status(404).json({ message: 'Orden no encontrada' });
+      res.status(400);
+      throw new Error('Orden no encontrada');
     }
 
     // VALIDAR SI EL USUARIO PUEDE VER LA ORDEN 
     if (req.user.role !== 'admin' && order.user.toString() !== req.user.id) {
-      return res.status(403).json({ message: 'Acceso denegado' });
+      res.status(403);
+      throw new Error('Acceso denegado');
     }
 
     res.status(200).json(order);
   } catch (error) {
-    console.error('Error obteniendo orden:', error);
-    res.status(500).json({ message: 'Error al obtener la orden' });
+    next(error);
   }
 };
 
