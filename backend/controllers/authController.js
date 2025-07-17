@@ -36,7 +36,8 @@ const register = async (req, res) => {
     const verifyUrl = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
   
   //Enviar email 
-    await sendEmail({
+    try{
+      await sendEmail({
       to: newUser.email,
       subject: 'Verifica tu cuenta',
       html:`
@@ -47,7 +48,10 @@ const register = async (req, res) => {
 
             <p>Este enlace expirará en 24 horas.</p>
           `
-    });
+      });
+    } catch (emailError) {
+      console.error('Error al enviar email de verificación:', emailError.message);
+    }
 
     res.status(201).json({ message: 'Usuario creado. Verificá tu email.' });
   } catch (error) {
