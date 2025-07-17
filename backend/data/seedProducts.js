@@ -1,9 +1,7 @@
 
-require('dotenv').config({ path: '../.env' });
-
+import 'dotenv/config';
 import mongoose from 'mongoose';
-//const mongoose = require('mongoose');
-const Product = require('../models/Product');
+import Product from '../models/Product.js';
 
 
 const products = [
@@ -58,19 +56,19 @@ const products = [
 
 const seedProducts = async () => {
   try {
-    console.log('🌐 URI de Mongo:', process.env.MONGO_URI);
+    console.log('URI de Mongo:', process.env.MONGO_URI);
     await mongoose.connect(process.env.MONGO_URI);
     console.log('Conectado a MongoDB');
 
     await Product.deleteMany();   //borra productos anteriores
-    console.log('🗑 Productos eliminados');
+    console.log('Productos eliminados');
 
     await Product.insertMany(products);
-    console.log('✅ Productos insertados con éxito');
+    console.log('Productos insertados con éxito');
 
     process.exit(); //Cierra el proceso correctamente 
   } catch (error) {
-    console.error('❌ Error al insertar producto:', error.message);
+    console.error('Error al insertar producto:', error.message);
     process.exit(1);
   }
 };
