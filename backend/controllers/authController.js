@@ -7,20 +7,24 @@ import sendEmail from '../utils/sendEmail.js';
 const register = async (req, res) => {
   try {
     const { name, email, password } =req.body;
-
+     console.log('Datos recibidos:', { name, email, password });
   // Validación básica
     if (!name || !email || !password) {
+      console.log('Faltan campos obligatorios');
       return res.status(400).json({ message: 'Todos los campos son obligatorios'});
     }
   
   // Comprobar si el usuario ya existe
     const userExists = await User.findOne({ email });
     if (userExists) {
+      console.log('Usuario ya existe')
       return res.status(409).json({ message: 'Este email ya está registrado' });
     }
 
   // Hashear Contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log('Contraseña hasheada');
+
   
   // Crear usuario
     const newUser = await User.create({
@@ -29,12 +33,15 @@ const register = async (req, res) => {
       password: hashedPassword
     });
 
+     console.log('Usuario creado:', newUser);
+
   // Crear token de verificación
     const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
    
   // link de verificación
     const verifyUrl = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
-  
+    console.log('Token generado y link de verificación creado');
+
   //Enviar email 
     try{
       await sendEmail({
@@ -49,13 +56,14 @@ const register = async (req, res) => {
             <p>Este enlace expirará en 24 horas.</p>
           `
       });
+      
     } catch (emailError) {
       console.error('Error al enviar email de verificación:', emailError.message);
     }
 
     res.status(201).json({ message: 'Usuario creado. Verificá tu email.' });
   } catch (error) {
-    console.error('Error en registro:', error);
+    console.error('Error en registro:', error); 
     res.status(500).json({message: 'Error al registrar usuario'})
   }
 };

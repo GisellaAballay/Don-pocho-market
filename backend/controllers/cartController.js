@@ -1,6 +1,5 @@
 
 import Cart from '../models/Cart.js';
-import Product from '../models/Product.js';
 
 // Obtener el carrito del usuario
 const getCart = async (req, res) => {

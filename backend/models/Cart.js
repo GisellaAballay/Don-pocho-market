@@ -1,4 +1,3 @@
-//Este permite guardar productos que un usuario quiera comprar, antes de confirmar su pedido
 
 import mongoose from "mongoose";
 
@@ -22,7 +21,7 @@ const cartSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
-    unique: true //Para que sea un carrito por usuario
+    unique: true 
   },
   items: [cartItemSchema],
   updateAt: {
