@@ -27,12 +27,13 @@ const addToCart = async (req, res) => {
     if (existingItem) {
       existingItem.quantity += quantity;
     } else {
-      cart.item.push({ product: productId, quantity });
+      cart.items.push({ product: productId, quantity });
     }
 
     await cart.save();
     res.status(200).json(cart);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: 'Error al agregar producto al carrito' });
   }
 };

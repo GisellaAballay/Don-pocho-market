@@ -20,6 +20,6 @@ router.put('/update', authMiddleware, updateCartItem);
 router.delete('/remove', authMiddleware, removeFromCart);
 
 // Vaciar el carrito
-router.delete('/remove', authMiddleware, clearCart);
+router.delete('/clear', authMiddleware, clearCart);
 
 export default router;
