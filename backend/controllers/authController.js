@@ -131,6 +131,16 @@ const login = async (req, res) => {
       { expiresIn: '7d' }
     );
 
+    const existingCart = await Cart.findOne({ user: user._id });
+
+    if (!existingCart) {
+      const newCart = new Cart ({
+      user: user._id,
+      items: [],
+      });
+      await newCart.save();
+    }
+
     res.status(200).json({
       message: 'Inicio de sesión exitoso',
       token,
