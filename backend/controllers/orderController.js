@@ -19,15 +19,24 @@ const createOrder = async (req, res) => {
     const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     const newOrder = new Order ({
-      user: req.user.id,  //Obtenida desde el middleware auth
-      items,
-      deliveryMethod,
-      paymentMethod,
-      totalPrice
+      user: req.user.id,
+      items: cart.items.map(item => ({
+        product: item.product._id,
+        quantity: item.quantity,
+        price: item.product.price
+      })),
+      deliveryMethod: req.body.deliveryMethod || 'retiro',
+      paymentMethod: req.body.paymentMethod || 'efectivo',
+      totalPrice,
+      status: 'pendiente'
     });
 
-    const saveOrder = await newOrder.save();
-    res.status(201).json(saveOrder);
+    await newOrder.save();
+    
+    res.status(201).json({
+      message: 'Orden creada con éxito',
+      order: newOrder
+    });
   } catch (error) {
     console.error('Error al crear la orden:', error);
     res.status(500).json({ message: 'Error al crear la orden' });
