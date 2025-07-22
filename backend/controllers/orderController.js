@@ -6,7 +6,7 @@ import sendEmail from '../utils/sendEmail.js';
 import sendWhatsApp from '../utils/sendWhatsApp.js';
 import Cart from '../models/Cart.js';
 
-// PARA CREAR UNA NUEVA ORDEN 
+
 const createOrder = async (req, res) => {
   try {
     const userId = req.user.id;
