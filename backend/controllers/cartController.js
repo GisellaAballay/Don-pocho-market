@@ -1,10 +1,11 @@
 
 import Cart from '../models/Cart.js';
+import mongoose from 'mongoose';
 
 // Obtener el carrito del usuario
 const getCart = async (req, res) => {
   try {
-    const cart = await Cart.findOne({ user: req.user.id }).populate('item.product');
+    const cart = await Cart.findOne({ user: req.user.id }).populate('items.product');
     if ( !cart ) return res.status(404).json({ message: 'Carrito no encontrado' });
     return res.status(200).json(cart);
   } catch (error) {
@@ -16,6 +17,15 @@ const getCart = async (req, res) => {
 const addToCart = async (req, res) => {
   const { productId, quantity } = req.body;
 
+  if (!mongoose.Types.ObjectId.isValid(productId)){
+  return res.status(400).json({ message: 'ID de producto no válido'})
+  };
+
+  const parsedQuantity = parseInt(quantity);
+  if (!parsedQuantity || parsedQuantity < 1) {
+    return res.status(400).json({ message: 'Cantidad inválida' });
+  }
+
   try {
     let cart = await Cart.findOne({ user: req.user.id });
     if (!cart) {
@@ -25,15 +35,15 @@ const addToCart = async (req, res) => {
     const existingItem = cart.items.find(item => item.product.toString() === productId);
 
     if (existingItem) {
-      existingItem.quantity += quantity;
+      existingItem.quantity += parsedQuantity;
     } else {
-      cart.items.push({ product: productId, quantity });
+      cart.items.push({ product: productId, quantity: parsedQuantity });
     }
 
     await cart.save();
     res.status(200).json(cart);
   } catch (error) {
-    console.error(error);
+    console.error('EEEEEEEERRRRORRRR', error);
     res.status(500).json({ message: 'Error al agregar producto al carrito' });
   }
 };
@@ -64,7 +74,7 @@ const removeFromCart = async (req, res) => {
   try{
     const cart = await Cart.findOneAndUpdate(
       { user: req.user.id },
-      { $pull: { item: { product: productId } } },
+      { $pull: { items: { product: productId } } },
       { new: true }
     );
 
