@@ -28,7 +28,7 @@ const orderSchema = new mongoose.Schema({
   },
   paymentMethod:{
     type: String,
-    enum: ['MercadoPago', 'MODO'],
+    enum: ['Mercado Pago', 'MODO'],
     required: true
   },
   totalPrice: {

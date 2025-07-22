@@ -12,11 +12,12 @@ const createOrder = async (req, res) => {
     const userId = req.user.id;
 
     const cart = await Cart.findOne({ user: userId }).populate('items.product');
+
     if (!cart || cart.items.length === 0) {
       return res.status(400).json({ message: 'El carrito está vacío' });
     }
      
-    const totalPrice = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const totalPrice = cart.items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
     const newOrder = new Order ({
       user: req.user.id,
@@ -25,8 +26,8 @@ const createOrder = async (req, res) => {
         quantity: item.quantity,
         price: item.product.price
       })),
-      deliveryMethod: req.body.deliveryMethod || 'retiro',
-      paymentMethod: req.body.paymentMethod || 'efectivo',
+      deliveryMethod: req.body.deliveryMethod,
+      paymentMethod: req.body.paymentMethod,
       totalPrice,
       status: 'pendiente'
     });
