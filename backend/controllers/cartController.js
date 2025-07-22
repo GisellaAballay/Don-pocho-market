@@ -43,7 +43,6 @@ const addToCart = async (req, res) => {
     await cart.save();
     res.status(200).json(cart);
   } catch (error) {
-    console.error('EEEEEEEERRRRORRRR', error);
     res.status(500).json({ message: 'Error al agregar producto al carrito' });
   }
 };

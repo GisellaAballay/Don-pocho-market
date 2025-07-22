@@ -4,17 +4,18 @@ import Order from '../models/Order.js';
 import User from '../models/User.js';
 import sendEmail from '../utils/sendEmail.js';
 import sendWhatsApp from '../utils/sendWhatsApp.js';
+import Cart from '../models/Cart.js';
 
 // PARA CREAR UNA NUEVA ORDEN 
 const createOrder = async (req, res) => {
   try {
-    const { items, deliveryMethod, paymentMethod } = req.body;
+    const userId = req.user.id;
 
-    if (!items || items.length === 0) {
-      return res.status(400).json({ message: 'La orden no puede estar vacía' })
+    const cart = await Cart.findOne({ user: userId }).populate('items.product');
+    if (!cart || cart.items.length === 0) {
+      return res.status(400).json({ message: 'El carrito está vacío' });
     }
-
-    // Calcular valor de la venta automáticamente 
+     
     const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     const newOrder = new Order ({
