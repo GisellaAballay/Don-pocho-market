@@ -28,7 +28,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use(errorHandler);
-// Falta Agregar ruta admin?
+app.use('/api/users', userRoutes);
 
 // Conexión en el puerto
 const PORT = process.env.PORT || 5000;

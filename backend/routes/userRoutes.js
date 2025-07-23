@@ -1,6 +1,6 @@
 
 import express from 'express';
-import { getProfile } from '../controllers/userController.js';
+import { getProfile, rehashAdmin } from '../controllers/userController.js';
 import authMiddleware from '../middleware/authMiddleware.js';
 import User from '../models/User.js';
 
