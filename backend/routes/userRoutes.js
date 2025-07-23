@@ -8,10 +8,12 @@ const router = express.Router();
 
 router.get('/profile', authMiddleware, getProfile);
 
-router.get('/rehash-admin', async (req,res) => {
+router.get('/rehash-admin/:email', async (req, res) => {
   try {
-    const admin = await User.findOne({ isAdmin: true});
-    if (!admin) return res.status(404).json({ messsage: "Admin no encontrado" });
+    const { email } = req.params;
+
+    const admin = await User.findOne({ email, isAdmin: true});
+    if (!admin) return res.status(404).json({ message: "Admin no encontrado" });
 
     admin.markModified('password');
     await admin.save();
