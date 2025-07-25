@@ -105,7 +105,10 @@ const updateOrderStatus = async(req, res) => {
         html: `Hola ${user.name || ''}, el estado de tu pedido de Don Pocho ha sido actualizado a: ${order.status}`
       });
     } else if (user.notificationPreference === 'whatsapp') {
-      await sendWhatsApp(user.phoneNumber, `Hola ${user.name || ''}, el estado de tu pedido de Don Pocho ha sido actualizado a: ${order.status}`);
+      await sendWhatsApp({
+        to: user.phoneNumber,
+        subject: `Hola ${user.name || ''}, el estado de tu pedido de Don Pocho ha sido actualizado a: ${order.status}`
+      });
     }
 
     //Si el pedido está pago, notificar al admin
@@ -118,7 +121,10 @@ const updateOrderStatus = async(req, res) => {
         subject: 'Nuevo pedido confirmado',
         html: `Hay un nuevo pedido confirmado: ${order._id}`
         });
-      await sendWhatsApp(adminPhone, `Pedido confirmado: ${order._id}`); 
+      await sendWhatsApp({
+        to: adminPhone,
+        subject: `Pedido confirmado: ${order._id}`
+      }); 
     }
 
     res.status(200).json(updateOrder);
