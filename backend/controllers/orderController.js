@@ -99,7 +99,11 @@ const updateOrderStatus = async(req, res) => {
 
     //Notificar al usuario
     if (user.notificationPreference === 'email') { 
-      await sendEmail(user.email, 'Actualización de tu pedido', `Hola ${user.name || ''}, el estado de tu pedido de Don Pocho ha sido actualizado a: ${order.status}`);
+      await sendEmail({ 
+        to: user.email,
+        subject: 'Actualización de tu pedido',
+        html: `Hola ${user.name || ''}, el estado de tu pedido de Don Pocho ha sido actualizado a: ${order.status}`
+      });
     } else if (user.notificationPreference === 'whatsapp') {
       await sendWhatsApp(user.phoneNumber, `Hola ${user.name || ''}, el estado de tu pedido de Don Pocho ha sido actualizado a: ${order.status}`);
     }
@@ -109,7 +113,11 @@ const updateOrderStatus = async(req, res) => {
       const adminEmail = process.env.ADMIN_EMAIL;
       const adminPhone = process.env.ADMIN_PHONE;
 
-      await sendEmail(adminEmail, 'Nuevo pedido confirmado', `Hay un nuevo pedido confirmado: ${order._id}`);
+      await sendEmail({
+        to : adminEmail,
+        subject: 'Nuevo pedido confirmado',
+        html: `Hay un nuevo pedido confirmado: ${order._id}`
+        });
       await sendWhatsApp(adminPhone, `Pedido confirmado: ${order._id}`); 
     }
 
