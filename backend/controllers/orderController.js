@@ -44,7 +44,6 @@ const createOrder = async (req, res) => {
   }
 }; 
 
-// OBTENER TODAS LAS ÓRDENES DEL USUARIO AUTENTICADO
 const getUserOrders = async (req, res) => {
   try {
     const orders = await Order.find({ user: req.user.id }).populate('items.product');
@@ -55,7 +54,6 @@ const getUserOrders = async (req, res) => {
   }
 };
 
-// OBTENER UNA ORDEN POR ID (PARA ADMINISTRADOR O DUEÑO)
 const getOrderById = async (req, res) => {
   try{
     const order = await Order.findById(req.params.id).populate('items.product');
@@ -65,7 +63,6 @@ const getOrderById = async (req, res) => {
       throw new Error('Orden no encontrada');
     }
 
-    // VALIDAR SI EL USUARIO PUEDE VER LA ORDEN 
     if (req.user.role !== 'admin' && order.user.toString() !== req.user.id) {
       res.status(403);
       throw new Error('Acceso denegado');
@@ -77,12 +74,10 @@ const getOrderById = async (req, res) => {
   }
 };
 
-//ACTUALIZAR ESTADO DE UNA ORDEN + NOTIFICACIONES
 const updateOrderStatus = async(req, res) => {
   try {
     const { status } = req.body;
 
-    // Validar estado permitido
     const validStatuses = ['pendiente', 'pagado', 'en preparación', 'enviado', 'entregado'];
     if (!validStatuses.includes(status)) {
       return res.status(400).json({ message: 'Estado no válido' });
@@ -94,10 +89,8 @@ const updateOrderStatus = async(req, res) => {
     order.status = status;
     const updateOrder = await order.save();
 
-    //Obtener datos del usuario
     const user = await User.findById(order.user);
 
-    //Notificar al usuario
     if (user.notificationPreference === 'email') { 
       await sendEmail({ 
         to: user.email,
@@ -111,7 +104,6 @@ const updateOrderStatus = async(req, res) => {
       });
     }
 
-    //Si el pedido está pago, notificar al admin
     if (order.status === 'pagado') {
       const adminEmail = process.env.ADMIN_EMAIL;
       const adminPhone = process.env.ADMIN_PHONE;

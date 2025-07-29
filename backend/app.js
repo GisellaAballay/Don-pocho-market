@@ -17,11 +17,9 @@ connectDB();
 
 const app = express();
 
-//Middlewares
 app.use(cors());
 app.use(express.json());
 
-// Rutas
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
@@ -30,7 +28,6 @@ app.use('/api/orders', orderRoutes);
 app.use(errorHandler);
 app.use('/api/users', userRoutes);
 
-// Conexión en el puerto
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en puerto ${PORT}`);

@@ -3,7 +3,6 @@ import 'dotenv/config';
 import mongoose from 'mongoose';
 import Product from '../models/Product.js';
 
-
 const products = [
    {
     name: 'Yerba Mate',
@@ -60,13 +59,13 @@ const seedProducts = async () => {
     await mongoose.connect(process.env.MONGO_URI);
     console.log('Conectado a MongoDB');
 
-    await Product.deleteMany();   //borra productos anteriores
+    await Product.deleteMany();
     console.log('Productos eliminados');
 
     await Product.insertMany(products);
     console.log('Productos insertados con éxito');
 
-    process.exit(); //Cierra el proceso correctamente 
+    process.exit();
   } catch (error) {
     console.error('Error al insertar producto:', error.message);
     process.exit(1);

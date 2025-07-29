@@ -2,7 +2,7 @@
 import Cart from '../models/Cart.js';
 import mongoose from 'mongoose';
 
-// Obtener el carrito del usuario
+
 const getCart = async (req, res) => {
   try {
     const cart = await Cart.findOne({ user: req.user.id }).populate('items.product');
@@ -13,7 +13,6 @@ const getCart = async (req, res) => {
   }
 };
 
-//Agregar producto al carrito
 const addToCart = async (req, res) => {
   const { productId, quantity } = req.body;
 
@@ -47,7 +46,6 @@ const addToCart = async (req, res) => {
   }
 };
 
-// Actualizar cantidad de un producto
 const updateCartItem = async (req, res) => {
   const { productId, quantity } = req.body;
 
@@ -66,7 +64,6 @@ const updateCartItem = async (req, res) => {
   }
 }; 
 
-// Eliminar un producto del carrito
 const removeFromCart = async (req, res) => {
   const { productId } = req.body;
 
@@ -84,7 +81,6 @@ const removeFromCart = async (req, res) => {
   }
 }
 
-//Vaciar el carrito
 const clearCart = async (req, res) => {
   try {
     const cart = await Cart.findOne({ user: req.user.id });

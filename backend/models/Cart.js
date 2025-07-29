@@ -1,7 +1,6 @@
 
 import mongoose from "mongoose";
 
-//Esquema de un item para el carrito
 const cartItemSchema = new mongoose.Schema({
   product: {
     type: mongoose.Schema.Types.ObjectId,
@@ -15,7 +14,6 @@ const cartItemSchema = new mongoose.Schema({
   }
 });
 
-//Esquema ppal del carrito
 const cartSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,

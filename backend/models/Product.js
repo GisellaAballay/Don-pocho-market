@@ -20,7 +20,7 @@ const productSchema = new mongoose.Schema({
     type: String,
     default: 'general'
   },
-  imageUrl: String, //en el caso de que quiera usar una image debería cambiarlo de imageUrl a image 
+  imageUrl: String, 
   offer: {
     type: Boolean,
     default: false

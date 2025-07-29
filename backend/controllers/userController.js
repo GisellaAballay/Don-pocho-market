@@ -1,7 +1,6 @@
 
 import User from '../models/User.js';
 
-// Obtener perfil del usuario autenticado
 const getProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
