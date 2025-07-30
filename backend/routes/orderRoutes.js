@@ -9,14 +9,6 @@ import sendWhatsApp from '../utils/sendWhatsApp.js';
 
 const router = express.Router();
 
-router.use(protect);
-router.post('/', authMiddleware, createOrder);
-router.get('/', authMiddleware, getUserOrders);
-router.get('/:id', authMiddleware, getOrderById); 
-router.put('/:id/status', authMiddleware, isAdmin, updateOrderStatus); 
-router.get('/admin/orders', authMiddleware, adminMiddleware, getAllOrders);
-router.patch('/:id/status', protect, isAdmin, updateOrderStatus)
-
 router.post('/test-whatsapp', async (req, res) => {
   const { to, message } = req.body;
 
@@ -28,5 +20,15 @@ router.post('/test-whatsapp', async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 });
+
+
+router.use(protect);
+router.post('/', authMiddleware, createOrder);
+router.get('/', authMiddleware, getUserOrders);
+router.get('/:id', authMiddleware, getOrderById); 
+router.put('/:id/status', authMiddleware, isAdmin, updateOrderStatus); 
+router.get('/admin/orders', authMiddleware, adminMiddleware, getAllOrders);
+router.patch('/:id/status', protect, isAdmin, updateOrderStatus)
+
 
 export default router;
