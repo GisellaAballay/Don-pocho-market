@@ -10,10 +10,12 @@ import sendWhatsApp from '../utils/sendWhatsApp.js';
 const router = express.Router();
 
 router.post('/test-whatsapp', async (req, res) => {
+  console.log('➡️  HIT /api/orders/test-whatsapp', req.body);
   const { to, message } = req.body;
 
   try {
     await sendWhatsApp(to, message);
+    console.log('✅ sendWhatsApp OK', result?.sid || result);
     res.status(200).json({ success: true, message: 'WhatsApp enviado con éxito' });
   } catch (error) {
     console.error('Error al enviar WhatsApp:', error.message);
